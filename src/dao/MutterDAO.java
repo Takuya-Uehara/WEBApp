@@ -26,7 +26,7 @@ public class MutterDAO {
     	try{
     		getConnection();
 
-	        String sql = "SELECT ID,NAME,TEXT FROM MUTTER ORDER BY ID DESC";
+	        String sql = "SELECT ID,NAME,TEXT,USERNUMBER FROM MUTTER ORDER BY ID DESC";
 	        PreparedStatement pStmt = con.prepareStatement(sql);
 
 	        ResultSet rs = pStmt.executeQuery();
@@ -35,7 +35,8 @@ public class MutterDAO {
 	        	int id = rs.getInt("ID");
 	        	String userName = rs.getString("NAME");
 	        	String text = rs.getString("TEXT");
-	        	Mutter mutter = new Mutter (id,userName,text);
+	        	String userNumber = rs.getString("usernumber");
+	        	Mutter mutter = new Mutter (id,userName,text,userNumber);
 	        	mutterList.add(mutter);
 	        }
 
@@ -63,10 +64,11 @@ public class MutterDAO {
     		try{
         		getConnection();
 
-    	        String sql = "INSERT INTO MUTTER (NAME,TEXT) VALUES(?,?)";
+    	        String sql = "INSERT INTO MUTTER (NAME,TEXT,USERNUMBER) VALUES(?,?,?)";
     	        PreparedStatement pStmt =con.prepareStatement(sql);
         		pStmt.setString(1, mutter.getUserName());
         		pStmt.setString(2, mutter.getText());
+        		pStmt.setString(3, mutter.getUserNumber());
         		int result =pStmt.executeUpdate();
         		if (result!=1) {
         			return false;
@@ -90,6 +92,77 @@ public class MutterDAO {
     	    }
 
     	}
+
+
+    //TODO 1件削除メソッド追加
+    public boolean delete (String mutterNumber) {
+
+		try{
+    		getConnection();
+
+	        String sql = "DELETE FROM MUTTER WHERE ID = ?";
+	        PreparedStatement pStmt =con.prepareStatement(sql);
+    		pStmt.setString(1, mutterNumber);
+    		int result =pStmt.executeUpdate();
+    		if (result!=1) {
+    			return false;
+    		}
+
+	        ResultSet rs = pStmt.executeQuery();
+
+	        con = null;
+	        close();
+	        return true;
+
+	    } catch (SQLException e) {
+	    	System.out.println("DAO接続できない");
+	        e.printStackTrace();
+	        return false;
+	    } catch (DAOException e) {
+	    	System.out.println("DAOエラー！");
+	        e.printStackTrace();
+	        return false;
+
+	    }
+
+	}
+
+
+  //TODO 1件編集メソッド追加
+    public boolean edit (String mutterNumber,String text) {
+
+		try{
+    		getConnection();
+
+	        String sql = "UPDATE MUTTER SET TEXT=? WHERE ID = ?";
+	        PreparedStatement pStmt =con.prepareStatement(sql);
+    		pStmt.setString(1, text);
+    		pStmt.setString(2, mutterNumber);
+    		int result =pStmt.executeUpdate();
+    		if (result!=1) {
+    			return false;
+    		}
+
+	        ResultSet rs = pStmt.executeQuery();
+
+	        con = null;
+	        close();
+	        return true;
+
+	    } catch (SQLException e) {
+	    	System.out.println("DAO接続できない");
+	        e.printStackTrace();
+	        return false;
+	    } catch (DAOException e) {
+	    	System.out.println("DAOエラー！");
+	        e.printStackTrace();
+	        return false;
+
+	    }
+
+	}
+
+
 
     // Connectionの取得
     private void getConnection() throws DAOException{
@@ -119,5 +192,8 @@ public class MutterDAO {
         }
     }
 
- }
+    //TODO 1件削除メソッド追加
+    //TODO 1件UPDATEpublic boolean create (Mutter mutter) {
+
+}
 

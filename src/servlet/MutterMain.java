@@ -20,7 +20,8 @@ import model.User;
 public class MutterMain extends HttpServlet {
   private static final long serialVersionUID = 1L;
 
-  protected void doGet(HttpServletRequest request,
+  @SuppressWarnings("unused")
+protected void doGet(HttpServletRequest request,
       HttpServletResponse response)
       throws ServletException, IOException {
 
@@ -73,7 +74,12 @@ public class MutterMain extends HttpServlet {
       User loginUser = (User) session.getAttribute("account");
 
       // つぶやきをつぶやきリストに追加
-      Mutter mutter = new Mutter(loginUser.getName(), text);
+      // Mutter mutter = new Mutter(loginUser.getName(), text,loginUser.getNumber());
+      Mutter mutter = new Mutter();
+      mutter.setUserName(loginUser.getName());
+      mutter.setText(text);
+      mutter.setUserNumber(loginUser.getNumber());
+
       PostMutterLogic postMutterLogic = new PostMutterLogic();
       postMutterLogic.execute(mutter);
 

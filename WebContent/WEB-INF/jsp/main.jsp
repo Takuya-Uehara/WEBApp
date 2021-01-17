@@ -31,12 +31,19 @@ String errorMsg = (String) request.getAttribute("errorMsg");
 <% } %>
 <% for(Mutter mutter : mutterList){%>
 <p><%=mutter.getUserName()%>：<%=mutter.getText()%>
-<%
-if (mutter.getUserName() == loginUser.getName()){
-%>
-<a href="">削除</a>
-<% } %>
 </p>
-<% } %>
+<%
+	if(mutter.getUserNumber().equals(loginUser.getNumber())){
+%>
+<form action="/Web/Delete" method="get">
+<input type="hidden"  name="mutterNumber" value="<%=mutter.getId() %>">
+<input type = "submit" value="削除">
+</form>
+<form action="/Web/Delete" method="post">
+<input type="text" name="edit">
+<input type="hidden"  name="mutterNumber" value="<%=mutter.getId() %>">
+<input type="submit" value="編集">
+</form>
+<% }} %>
 </body>
 </html>
