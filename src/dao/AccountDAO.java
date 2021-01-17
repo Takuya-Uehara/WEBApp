@@ -36,7 +36,7 @@ public class AccountDAO {
     	User returnAb = new User();
         getConnection();
         int count = 0;
-        String sql = "SELECT id, name, pass FROM member WHERE id = ? AND pass = ?";
+        String sql = "SELECT id, name, pass,number FROM member WHERE id = ? AND pass = ?";
 
 
 
@@ -55,6 +55,7 @@ public class AccountDAO {
                 returnAb.setId(rs.getString("id"));
                 returnAb.setPass(rs.getString("pass"));
                 returnAb.setName(rs.getString("name"));
+                returnAb.setNumber(rs.getString("number"));
             } else {
                 // アカウントがなければnullを返す
                 return null;
